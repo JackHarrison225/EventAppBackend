@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { Ad } = require("./models/ad");
+const { Event } = require("./models/event");
 const { User } = require("./models/user");
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
@@ -54,24 +54,24 @@ app.use(async (req, res, next) => {
 
 // defining CRUD operations
 app.get("/", async (req, res) => {
-  res.send(await Ad.find());
+  res.send(await Event.find());
 });
 
 app.post("/", async (req, res) => {
-  const newAd = req.body;
-  const ad = new Ad(newAd);
-  await ad.save();
-  res.send({ message: "New ad inserted." });
+  const newEvent = req.body;
+  const event = new Event(newEvent);
+  await event.save();
+  res.send({ message: "New event inserted." });
 });
 
 app.delete("/:id", async (req, res) => {
-  await Ad.findByIdAndDelete(req.params.id);
-  res.send({ message: "Ad removed." });
+  await Event.findByIdAndDelete(req.params.id);
+  res.send({ message: "Event removed." });
 });
 
 app.put("/:id", async (req, res) => {
-  await Ad.findByIdAndUpdate(req.params.id, req.body);
-  res.send({ message: "Ad updated." });
+  await Event.findByIdAndUpdate(req.params.id, req.body);
+  res.send({ message: "Event updated." });
 });
 
 // starting the server
