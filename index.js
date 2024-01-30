@@ -54,15 +54,35 @@ app.use(async (req, res, next) => {
 
 // defining CRUD operations
 app.get("/", async (req, res) => {
-  res.send(await Event.find());
+try {
+  const a = await Event.find();
+  console.log("Called A in index.js");
+  res.send(a);
+} catch (error) {
+ console.error("error in GET/ index.js")
+}
+  
 });
+
+// app.get("/", async (req, res) => {
+//   res.send(await Ad.find());
+// });
+
+
+
+
+
 
 app.post("/", async (req, res) => {
   const newEvent = req.body;
+  // console.log(req.body)
   const event = new Event(newEvent);
+  console.log("Created an event")
   await event.save();
   res.send({ message: "New event inserted." });
 });
+
+
 
 app.delete("/:id", async (req, res) => {
   await Event.findByIdAndDelete(req.params.id);
@@ -70,6 +90,11 @@ app.delete("/:id", async (req, res) => {
 });
 
 app.put("/:id", async (req, res) => {
+  console.log("Connecting to Update DB");
+  console.log(req.params)
+  console.log(req.body)
+  console.log("Making Update DB");
+
   await Event.findByIdAndUpdate(req.params.id, req.body);
   res.send({ message: "Event updated." });
 });
