@@ -21,21 +21,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//create user
+  app.post("/signup", async (req, res) => {
+    const newUser = req.body;
+    console.log(req.body)
+    const user = new User(newUser);
+    console.log("Created an user")
+    console.log(user)
+    await user.save();
+    res.send({ message: "New User Created." });
+  });
+
 // Authorization generation endpoint
 app.post("/auth", async (req, res) => {
   console.log("arrived");
   console.log(req.body);
   const user = await User.findOne({ username: req.body.username });
-  console.log(user);
+  //console.log(user);
   if (!user) {
     return res.sendStatus(403);
   }
-//   do not store password in plain text - its just for learning purposes
+
+  //   do not store password in plain text - its just for learning purposes
   if (req.body.password !== user.password) {
     console.log("wrong password");
     return res.sendStatus(403);
   }
-//   code to generate token
+  //   code to generate token
   user.token = uuidv4();
   await user.save();
   res.send({ token: user.token });
@@ -48,7 +60,7 @@ app.use(async (req, res, next) => {
   if (user) {
     next();
   } else {
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
 });
 
@@ -67,11 +79,6 @@ try {
 // app.get("/", async (req, res) => {
 //   res.send(await Ad.find());
 // });
-
-
-
-
-
 
 app.post("/", async (req, res) => {
   const newEvent = req.body;
