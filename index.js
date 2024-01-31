@@ -21,10 +21,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//CheckUser
+  app.get("/username/:usernameValue", async (req, res) =>
+    {
+      const value = req.params.usernameValue
+
+      console.log("BACKEND CHECKING DATABASE")
+      const user = await User.findOne({ username: value });
+
+      console.log(user);
+      // console.log(req.body);
+
+      if(user)
+      {
+        res.send(true)
+        // return true
+      }
+      else
+      {
+        res.send(false)
+        // return false
+      }
+    }
+  )
+
 //create user
   app.post("/signup", async (req, res) => {
     const newUser = req.body;
-    console.log(req.body)
+    // console.log(req.body)
     const user = new User(newUser);
     console.log("Created an user")
     console.log(user)
