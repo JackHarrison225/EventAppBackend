@@ -132,7 +132,7 @@ app.put("/:id", async (req, res) => {
 
 // starting the server
 app.listen(
-  "https://event-app-tyhr.onrender.com", 
+  3000, 
   () => {
-  //console.log("listening on port 3001");
+  console.log("listening on port 3000");
 });
